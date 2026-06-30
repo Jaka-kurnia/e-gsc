@@ -12,7 +12,7 @@ class IbuController extends Controller
      */
     public function index()
     {
-        //
+        return view('Ibu.index');
     }
 
     /**

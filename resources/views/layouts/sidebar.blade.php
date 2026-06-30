@@ -40,7 +40,7 @@
                     <span>Anak</span>
                 </a>
 
-                <a href="#"
+                <a href="{{ route('ibu.index') }}"
                     class="flex items-center px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-indigo-500/30 rounded-md transition-colors group/item">
                     <i class="fi fi-rr-bullet text-lg text-indigo-400 mr-3 group-hover/item:text-indigo-200"></i>
                     <span>Orang Tua</span>
