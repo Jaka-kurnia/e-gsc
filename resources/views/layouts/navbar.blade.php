@@ -27,7 +27,7 @@
                     </svg>
                 </button>
 
-                <div x-show="open" @click.away="open = false" x-transition
+                <!-- <div x-show="open" @click.away="open = false" x-transition
                     class="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50 overflow-hidden">
                     <div class="px-4 py-2.5 border-b border-gray-200 bg-gray-50">
                         <div class="font-medium text-sm text-gray-900">User Name</div>
@@ -48,7 +48,7 @@
                             </a>
                         </form>
                     </div>
-                </div>
+                </div> -->
             </div>
 
         </div>

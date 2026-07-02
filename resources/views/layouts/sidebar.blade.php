@@ -61,7 +61,7 @@
             <span class="ml-3 font-medium">Riwayat</span>
         </a>
     </div>
-    <div class="flex items-center mr-4">
+    {{-- <div class="flex items-center mr-4">
         <a href="#" class="flex items-center flex-1 px-4 py-3 text-gray-200 hover:bg-indigo-500 rounded-lg ml-3">
             <i class="fi fi-rs-diploma text-lg leading-none relative top-0.5"></i>
             <span class="ml-3 font-medium">Hasil Kelulusan</span>
@@ -85,7 +85,7 @@
             <i class="fi fi-rs-test text-lg leading-none relative top-0.5"></i>
             <span class="ml-3 font-medium">Seleksi Ujian</span>
         </a>
-    </div>
+    </div> --}}
     <div class="flex items-center mr-4">
         <a href="#" class="flex items-center flex-1 px-4 py-3 text-gray-200 hover:bg-indigo-500 rounded-lg ml-3">
             <i class="fi fi-rs-megaphone text-lg leading-none relative top-0.5"></i>
