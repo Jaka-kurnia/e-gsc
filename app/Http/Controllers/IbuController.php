@@ -12,7 +12,8 @@ class IbuController extends Controller
      */
     public function index()
     {
-        return view('Ibu.index');
+        $data['ibu'] = Ibu::all();
+        return view('Ibu.index', $data);
     }
 
     /**
