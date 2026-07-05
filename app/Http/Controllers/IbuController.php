@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 
 class IbuController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+   // Fungsi Index
     public function index()
     {
         $data['ibu'] = Ibu::all();
@@ -24,12 +22,33 @@ class IbuController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+   // Fungsi Simpan
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nik' => 'required|numeric|digits:16|unique:ibus,nik',
+            'nama_ibu' => 'required|string|max:100',
+            'nama_ayah' => 'required|string|max:100',
+            'no_hp' => 'required|string|max:14',
+            'rt' => 'required|string|max:4',
+            'rw' => 'required|string|max:4',
+            'alamat' => 'required|string|max:255',
+        ], [
+            'nik.required' => 'NIK harus diisi tidak boleh kosong.',
+            'nik.numeric' => 'NIK harus berupa angka.',
+            'nik.digits' => 'NIK harus terdiri dari 16 digit.',
+            'nik.unique' => 'NIK sudah terdaftar.',
+            'nama_ibu.required' => 'Nama Ibu harus diisi tidak boleh kosong.',
+            'nama_ayah.required' => 'Nama Ayah harus diisi tidak boleh kosong.',
+            'no_hp.required' => 'Nomor HP harus diisi tidak boleh kosong.',
+            'rt.required' => 'RT harus diisi tidak boleh kosong.',
+            'rw.required' => 'RW harus diisi tidak boleh kosong.',
+            'alamat.required' => 'Alamat harus diisi tidak boleh kosong.',
+        ]);
+
+        Ibu::create($validated);
+
+        return redirect()->route('ibu.index')->with('success', 'Data Orang Tua berhasil ditambahkan.');
     }
 
     /**
@@ -40,27 +59,45 @@ class IbuController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+//    Fungsi Edit
     public function edit(Ibu $ibu)
     {
-        //
+        return response()->json($ibu);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // Fungsi Update
     public function update(Request $request, Ibu $ibu)
     {
-        //
+        $validated = $request->validate([
+            'nik' => 'required|numeric|digits:16|unique:ibus,nik,' . $ibu->id,
+            'nama_ibu' => 'required|string|max:100',
+            'nama_ayah' => 'required|string|max:100',
+            'no_hp' => 'required|string|max:14',
+            'rt' => 'required|string|max:4',
+            'rw' => 'required|string|max:4',
+            'alamat' => 'required|string',
+        ], [
+            'nik.required' => 'NIK harus diisi tidak boleh kosong.',
+            'nik.numeric' => 'NIK harus berupa angka.',
+            'nik.digits' => 'NIK harus terdiri dari 16 digit.',
+            'nik.unique' => 'NIK sudah terdaftar.',
+            'nama_ibu.required' => 'Nama Ibu harus diisi tidak boleh kosong.',
+            'nama_ayah.required' => 'Nama Ayah harus diisi tidak boleh kosong.',
+            'no_hp.required' => 'Nomor HP harus diisi tidak boleh kosong.',
+            'rt.required' => 'RT harus diisi tidak boleh kosong.',
+            'rw.required' => 'RW harus diisi tidak boleh kosong.',
+            'alamat.required' => 'Alamat harus diisi tidak boleh kosong.',
+        ]);
+
+        $ibu->update($validated);
+
+        return redirect()->route('ibu.index')->with('success', 'Data Orang Tua berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+//    Fungsi Hapus
     public function destroy(Ibu $ibu)
     {
-        //
+        $ibu->delete();
+        return redirect()->route('ibu.index')->with('success', 'Data Orang Tua berhasil dihapus.');
     }
 }
