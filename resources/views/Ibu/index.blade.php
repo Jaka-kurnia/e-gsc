@@ -18,14 +18,14 @@
         <div class="flex justify-end gap-1.5 mb-6">
             <x-btn-success>
                 <a href="#">
-                    <i class="fi fi-rr-file-excel mx-2"></i>
+                    <i class="fi fi-rr-file-excel mx-2 text-xl"></i>
                     Export Excel
                 </a>
             </x-btn-success>
 
             <x-btn-danger>
                 <a href="#">
-                    <i class="fi fi-rr-file-pdf mx-2"></i>
+                    <i class="fi fi-rr-file-pdf mx-2 text-xl"></i>
                     Export PDF
                 </a>
             </x-btn-danger>
@@ -41,6 +41,7 @@
                     <x-th>RW</x-th>
                     <x-th>RT</x-th>
                     <x-th>Alamat</x-th>
+                    <x-th>Aksi</x-th>
                 </tr>
             </thead>
             <tbody>
@@ -52,13 +53,36 @@
                         <x-td>{{ $iterm->nama_ayah }}</x-td>
                         <x-td>{{ $iterm->rw }}</x-td>
                         <x-td>{{ $iterm->rt }}</x-td>
-                        <x-td>{{ $iterm->alamat }}</x-td>
+                        <x-td>
+                            <div class="max-w-50 truncate" title="{{ $iterm->alamat }}">
+                                {{ $iterm->alamat }}
+                            </div>
+                        </x-td>
+                        <x-td>
+                            <div class="flex gap-2">
+                                <x-btn-edit>
+                                    <a href="{{ route('ibu.edit', $iterm->id) }}">
+                                        <i class="fi fi-rr-edit text-lg"></i>
+                                    </a>
+                                </x-btn-edit>
+
+                                <form action="{{ route('ibu.destroy', $iterm->id) }}" method="POST"
+                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-btn-delete type="submit">
+                                        <i class="fi fi-rr-trash text-lg"></i>
+                                    </x-btn-delete>
+                                </form>
+                            </div>
+                        </x-td>
                     </tr>
                 @empty
                     <tr>
-                        <x-td colspan="7">
+                        <x-td colspan="8">
                             <div class="flex items-center justify-center">
-                                <span class="text-md text-red-700 bg-white">
+                                <span
+                                    class="text-md text-red-800 bg-white font-semibold px-4 py-2 rounded-lg flex items-center gap-2">
                                     <i class="fi fi-rr-file-exclamation text-xl"></i>
                                     Data Orang Tua Belum Tersedia
                                 </span>
