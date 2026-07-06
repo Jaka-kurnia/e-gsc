@@ -7,10 +7,24 @@ use Illuminate\Http\Request;
 
 class IbuController extends Controller
 {
-   // Fungsi Index
-    public function index()
+    // Fungsi Index
+    public function index(Request $request)
     {
-        $data['ibu'] = Ibu::all();
+        $search = $request->input('search');
+
+        $data['ibu'] = Ibu::query()
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('nama_ibu', 'like', "%{$search}%")
+                        ->orWhere('nama_ayah', 'like', "%{$search}%")
+                        ->orWhere('nik', 'like', "%{$search}%")
+                        ->orWhere('alamat', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->paginate(8)
+            ->withQueryString();
+
         return view('Ibu.index', $data);
     }
 
@@ -22,7 +36,7 @@ class IbuController extends Controller
         //
     }
 
-   // Fungsi Simpan
+    // Fungsi Simpan
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -59,7 +73,7 @@ class IbuController extends Controller
         //
     }
 
-//    Fungsi Edit
+    //    Fungsi Edit
     public function edit(Ibu $ibu)
     {
         return response()->json($ibu);
@@ -94,7 +108,7 @@ class IbuController extends Controller
         return redirect()->route('ibu.index')->with('success', 'Data Orang Tua berhasil diperbarui.');
     }
 
-//    Fungsi Hapus
+    //    Fungsi Hapus
     public function destroy(Ibu $ibu)
     {
         $ibu->delete();

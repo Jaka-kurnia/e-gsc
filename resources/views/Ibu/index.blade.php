@@ -98,7 +98,10 @@
                     </tr>
                 @endforelse
             </tbody>
+            
         </x-table>
+
+        <x-paginate :paginator="$ibu" />
 
         {{-- Modal Tambah / Edit Data  --}}
         <x-modal name="modal_ibu">
