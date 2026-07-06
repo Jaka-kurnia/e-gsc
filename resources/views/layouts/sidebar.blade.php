@@ -40,7 +40,7 @@
 
             <div class="mt-1 ml-7 flex flex-col space-y-1 border-l border-gray-700 pl-2">
                 {{-- Submenu Anak --}}
-                <a href="#"
+                <a href="{{ route('anak.index') }}"
                     class="flex items-center px-4 py-2 text-sm rounded-md transition-colors group/item
                 {{ request()->routeIs('anak.*')
                     ? 'text-white bg-indigo-500/40 font-medium'

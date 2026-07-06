@@ -15,4 +15,9 @@ class Ibu extends Model
         'rw',
         'alamat',
     ];
+
+    public function anaks()
+    {
+        return $this->hasMany(Anak::class, 'ibu_id');
+    }
 }
