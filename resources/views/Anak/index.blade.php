@@ -50,9 +50,30 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($anak as $iterm)
+                @forelse ($anak as $item)
                     <tr>
-
+                        <x-td class="text-center">{{ $loop->iteration }}</x-td>
+                        <x-td>{{ $item->nik }}</x-td>
+                        <x-td>{{ $item->nama }}</x-td>
+                        <x-td>{{ $item->ibu->nama_ibu }}</x-td>
+                        <x-td class="text-center">{{ $item->tanggal_lahir }}</x-td>
+                        <x-td class="text-center">
+                            {{ $item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}
+                        </x-td>
+                        <x-td class="text-center">{{ $item->berat_badan }}</x-td>
+                        <x-td class="text-center">{{ $item->tinggi_badan }}</x-td>
+                        <x-td class="text-center">
+                            <div class="flex justify-center gap-2">
+                                <x-btn-warning>
+                                    <a href="{{ route('anak.edit', $item->id) }}">
+                                        <i class="fi fi-rr-edit"></i>
+                                    </a>
+                                </x-btn-warning>
+                                <x-btn-delete type="button" onclick="confirmDelete('{{ $item->id }}')">
+                                    <i class="fi fi-rr-trash text-lg"></i>
+                                </x-btn-delete>
+                            </div>
+                        </x-td>
                     </tr>
 
                 @empty

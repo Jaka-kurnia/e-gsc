@@ -17,8 +17,7 @@ class IbuController extends Controller
                 $query->where(function ($q) use ($search) {
                     $q->where('nama_ibu', 'like', "%{$search}%")
                         ->orWhere('nama_ayah', 'like', "%{$search}%")
-                        ->orWhere('nik', 'like', "%{$search}%")
-                        ->orWhere('alamat', 'like', "%{$search}%");
+                        ->orWhere('nik', 'like', "%{$search}%");
                 });
             })
             ->latest()
