@@ -86,19 +86,19 @@
                     </tr>
                 @empty
                     <tr>
-                        <x-td colspan="9">
-                            <div class="flex items-center justify-center">
+                        <x-td colspan="9" class="text-center p-0">
+                            <div class="flex items-center justify-center py-10 w-full">
                                 <span
-                                    class="text-md text-red-800 bg-white font-semibold px-4 py-2 rounded-lg flex items-center gap-2">
-                                    <i class="fi fi-rr-file-exclamation text-xl"></i>
-                                    Data Orang Tua Belum Tersedia
+                                    class="text-sm text-white bg-red-700 font-semibold px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 border border-red-200 shadow-sm mx-auto">
+                                    <i class="fi fi-rr-file-exclamation text-lg leading-none"></i>
+                                    <span>Data Orang Tua Belum Tersedia</span>
                                 </span>
                             </div>
                         </x-td>
                     </tr>
                 @endforelse
             </tbody>
-            
+
         </x-table>
 
         <x-paginate :paginator="$ibu" />
