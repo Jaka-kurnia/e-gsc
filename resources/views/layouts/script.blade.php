@@ -50,6 +50,6 @@
  </script>
 
  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
- <script src="{{ asset('dist/js/demo-theme.min.js?1692870487') }}"></script>
+ {{-- <script src="{{ asset('dist/js/demo-theme.min.js?1692870487') }}"></script> --}}
 
  @stack('js')
