@@ -1,4 +1,5 @@
  {{-- Modal Detail Data Anak --}}
+<div x-data="anakDetail()" x-on:open-detail-modal.window="openDetail($event.detail)">
  <x-modal name="modal_detail_anak">
      <div class="p-6 text-gray-800">
          <div class="mb-5 pb-3 border-b border-gray-100 flex justify-between items-center">
@@ -59,3 +60,4 @@
          </div>
      </div>
  </x-modal>
+</div>

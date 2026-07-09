@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Anak;
+use App\Models\Ibu;
 use Illuminate\Http\Request;
 
 class AnakController extends Controller
@@ -14,7 +15,8 @@ class AnakController extends Controller
     {
        
         $anak = Anak::with('ibu')->paginate(10);
-        return view('Anak.index', compact('anak'));
+        $ibu = Ibu::all();
+        return view('Anak.index', compact('anak', 'ibu'));
     }
 
     /**
