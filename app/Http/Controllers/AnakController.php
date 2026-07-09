@@ -11,10 +11,17 @@ class AnakController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-       
-        $anak = Anak::with('ibu')->paginate(10);
+        $search = $request->input('search');
+
+        $anak = Anak::with('ibu')
+            ->when($search, function ($query, $search) {
+                $query->where('nama', 'like', "%{$search}%");
+            })
+            ->paginate(1)
+            ->withQueryString();
+
         $ibu = Ibu::all();
         return view('Anak.index', compact('anak', 'ibu'));
     }
@@ -32,7 +39,35 @@ class AnakController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'ibu_id' => 'required',
+            'nik' => 'required|string|max:16|unique:anaks,nik',
+            'nama' => 'required|string|max:255',
+            'tanggal_lahir' => 'required|date',
+            'jenis_kelamin' => 'required|in:L,P',
+            'berat_badan' => 'nullable|numeric',
+            'tinggi_badan' => 'nullable|numeric',
+        ], [
+            'ibu_id.required' => 'Orang Tua harus dipilih.',
+            'ibu_id.exists' => 'Orang Tua yang dipilih tidak valid.',
+            'nik.required' => 'NIK harus diisi tidak boleh kosong.',
+            'nik.string' => 'NIK harus berupa string.',
+            'nik.max' => 'NIK tidak boleh lebih dari 16 karakter.',
+            'nik.unique' => 'NIK sudah terdaftar.',
+            'nama.required' => 'Nama Anak harus diisi tidak boleh kosong.',
+            'nama.string' => 'Nama Anak harus berupa string.',
+            'nama.max' => 'Nama Anak tidak boleh lebih dari 255 karakter.',
+            'tanggal_lahir.required' => 'Tanggal Lahir harus diisi tidak boleh kosong.',
+            'tanggal_lahir.date' => 'Tanggal Lahir harus berupa tanggal yang valid.',
+            'jenis_kelamin.required' => 'Jenis Kelamin harus dipilih.',
+            'jenis_kelamin.in' => 'Jenis Kelamin yang dipilih tidak valid.',
+            'berat_badan.numeric' => 'Berat Badan harus berupa angka.',
+            'tinggi_badan.numeric' => 'Tinggi Badan harus berupa angka.',
+        ]);
+
+        Anak::create($validated);
+
+        return redirect()->route('anak.index')->with('success', 'Data Anak berhasil ditambahkan.');
     }
 
     /**
@@ -48,7 +83,7 @@ class AnakController extends Controller
      */
     public function edit(Anak $anak)
     {
-        //
+        return response()->json($anak);
     }
 
     /**
@@ -56,7 +91,35 @@ class AnakController extends Controller
      */
     public function update(Request $request, Anak $anak)
     {
-        //
+        $validated = $request->validate([
+            'ibu_id' => 'required',
+            'nik' => 'required|string|max:16|unique:anaks,nik,' . $anak->id,
+            'nama' => 'required|string|max:255',
+            'tanggal_lahir' => 'required|date',
+            'jenis_kelamin' => 'required|in:L,P',
+            'berat_badan' => 'nullable|numeric',
+            'tinggi_badan' => 'nullable|numeric',
+        ], [
+            'ibu_id.required' => 'Orang Tua harus dipilih.',
+            'ibu_id.exists' => 'Orang Tua yang dipilih tidak valid.',
+            'nik.required' => 'NIK harus diisi tidak boleh kosong.',
+            'nik.string' => 'NIK harus berupa string.',
+            'nik.max' => 'NIK tidak boleh lebih dari 16 karakter.',
+            'nik.unique' => 'NIK sudah terdaftar.',
+            'nama.required' => 'Nama Anak harus diisi tidak boleh kosong.',
+            'nama.string' => 'Nama Anak harus berupa string.',
+            'nama.max' => 'Nama Anak tidak boleh lebih dari 255 karakter.',
+            'tanggal_lahir.required' => 'Tanggal Lahir harus diisi tidak boleh kosong.',
+            'tanggal_lahir.date' => 'Tanggal Lahir harus berupa tanggal yang valid.',
+            'jenis_kelamin.required' => 'Jenis Kelamin harus dipilih.',
+            'jenis_kelamin.in' => 'Jenis Kelamin yang dipilih tidak valid.',
+            'berat_badan.numeric' => 'Berat Badan harus berupa angka.',
+            'tinggi_badan.numeric' => 'Tinggi Badan harus berupa angka.',
+        ]);
+
+        $anak->update($validated);
+
+        return redirect()->route('anak.index')->with('success', 'Data Anak berhasil diperbarui.');
     }
 
     /**
@@ -64,6 +127,8 @@ class AnakController extends Controller
      */
     public function destroy(Anak $anak)
     {
-        //
+        $anak->delete();
+
+        return redirect()->route('anak.index')->with('success', 'Data Anak berhasil dihapus.');
     }
 }

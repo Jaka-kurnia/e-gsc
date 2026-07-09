@@ -12,15 +12,39 @@
 
             <!-- Grid Input Fields -->
             <div class="grid grid-cols-2 gap-4 mb-6">
-                <x-input label="NIK" name="nik" placeholder="Masukkan NIK" x-model="nik" />
-                <x-input label="Nama Ibu" name="nama_ibu" placeholder="Masukkan Nama Ibu" x-model="nama_ibu" />
-                <x-input label="Nama Ayah" name="nama_ayah" placeholder="Masukkan Nama Ayah" x-model="nama_ayah" />
-                <x-input label="No. HP" name="no_hp" placeholder="Masukkan No. HP" x-model="no_hp" />
-                <x-input label="RT" name="rt" placeholder="Masukkan RT" x-model="rt" />
-                <x-input label="RW" name="rw" placeholder="Masukkan RW" x-model="rw" />
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">NIK</label>
+                    <x-input name="nik" placeholder="Masukkan NIK" x-model="nik" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Ibu</label>
+                    <x-input name="nama_ibu" placeholder="Masukkan Nama Ibu" x-model="nama_ibu" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Ayah</label>
+                    <x-input name="nama_ayah" placeholder="Masukkan Nama Ayah" x-model="nama_ayah" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">No. HP</label>
+                    <x-input name="no_hp" placeholder="Masukkan No. HP" x-model="no_hp" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">RT</label>
+                    <x-input name="rt" placeholder="Masukkan RT" x-model="rt" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">RW</label>
+                    <x-input name="rw" placeholder="Masukkan RW" x-model="rw" />
+                </div>
+
                 <div class="col-span-2">
-                    <x-textarea label="Alamat" name="alamat" placeholder="Masukkan Alamat" rows="3"
-                        x-model="alamat" />
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Alamat</label>
+                    <x-textarea name="alamat" placeholder="Masukkan Alamat" rows="3" x-model="alamat" />
                 </div>
             </div>
 
