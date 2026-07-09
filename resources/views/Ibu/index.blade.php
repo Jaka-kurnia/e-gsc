@@ -20,18 +20,18 @@
                 <x-search name="search" placeholder="Cari  NIK atau Nama..." x-model="search" />
             </form>
 
-            <div class="flex justify-end gap-1.5 mb-6">
-                <x-btn-success>
-                    <a href="#">
-                        <i class="fi fi-rr-file-excel mx-2 text-xl"></i>
-                        Export Excel
+            <div class="flex justify-end gap-2">
+                <x-btn-success class="p-0! overflow-hidden shadow-sm">
+                    <a href="#" class="flex items-center gap-2 px-4 py-2 text-sm font-medium h-full w-full">
+                        <i class="fi fi-rr-file-excel text-base leading-none"></i>
+                        <span>Export Excel</span>
                     </a>
                 </x-btn-success>
 
-                <x-btn-danger>
-                    <a href="#">
-                        <i class="fi fi-rr-file-pdf mx-2 text-xl"></i>
-                        Export PDF
+                <x-btn-danger class="p-0! overflow-hidden shadow-sm">
+                    <a href="#" class="flex items-center gap-2 px-4 py-2 text-sm font-medium h-full w-full">
+                        <i class="fi fi-rr-file-pdf text-base leading-none"></i>
+                        <span>Export PDF</span>
                     </a>
                 </x-btn-danger>
             </div>
@@ -106,11 +106,19 @@
                     <tr>
                         <x-td colspan="9" class="text-center p-0">
                             <div class="flex items-center justify-center py-10 w-full">
-                                <span
-                                    class="text-sm text-white bg-red-700 font-semibold px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 border border-red-200 shadow-sm mx-auto">
-                                    <i class="fi fi-rr-file-exclamation text-lg leading-none"></i>
-                                    <span>Data Orang Tua Belum Tersedia</span>
-                                </span>
+                                @if (request('search'))
+                                    <span
+                                        class="text-sm text-white bg-red-700 font-semibold px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 border border-amber-200 shadow-sm mx-auto">
+                                        <i class="fi fi-rr-search-alt text-lg leading-none"></i>
+                                        <span>Data dengan kata kunci "{{ request('search') }}" tidak ditemukan</span>
+                                    </span>
+                                @else
+                                    <span
+                                        class="text-sm text-white bg-red-700 font-semibold px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 border border-red-200 shadow-sm mx-auto">
+                                        <i class="fi fi-rr-file-exclamation text-lg leading-none"></i>
+                                        <span>Data Orang Tua Belum Tersedia</span>
+                                    </span>
+                                @endif
                             </div>
                         </x-td>
                     </tr>
