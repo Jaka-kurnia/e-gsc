@@ -43,13 +43,13 @@
              <div class="flex items-start">
                  <div class="w-36 text-gray-500 font-medium shrink-0">Berat Badan</div>
                  <div class="px-2 text-gray-500">:</div>
-                 <div class="text-gray-900" x-text="detail.berat_badan + ' kg'"></div>
+                 <div class="text-gray-900" x-text="detail.berat_badan"></div>
              </div>
 
              <div class="flex items-start">
                  <div class="w-36 text-gray-500 font-medium shrink-0">Tinggi Badan</div>
                  <div class="px-2 text-gray-500">:</div>
-                 <div class="text-gray-900" x-text="detail.tinggi_badan + ' cm'"></div>
+                 <div class="text-gray-900" x-text="detail.tinggi_badan"></div>
              </div>
          </div>
 
