@@ -53,7 +53,7 @@
                         <x-td class="text-center">{{ $loop->iteration }}</x-td>
                         <x-td class="text-center">{{ $item->kode_imunisasi }}</x-td>
                         <x-td>{{ $item->nama_imunisasi }}</x-td>
-                        <x-td>{{ $item->deskripsi }}</x-td>
+                        <x-td class="">{{ $item->deskripsi ?? '-' }}</x-td>
                         <x-td class="text-center">
                             <div class="flex justify-center items-center gap-1.5">
                                 <x-btn-primary type="button"
@@ -107,4 +107,7 @@
             </tbody>
 
         </x-table>
+        @include('Imunisasi.modalTambah')
+        @include('Imunisasi.script')
+        @include('Imunisasi.detail')
 </x-app-layout>

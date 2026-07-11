@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->char('kode_imunisasi', 10)->unique();
             $table->string('nama_imunisasi', 100);
-            $table->string('deskripsi', 255);
+            $table->string('deskripsi', 255)->nullable();
             $table->timestamps();
         });
     }
