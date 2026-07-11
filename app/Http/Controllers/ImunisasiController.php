@@ -12,7 +12,8 @@ class ImunisasiController extends Controller
      */
     public function index()
     {
-        //
+        $data['imunisasi'] = Imunisasi::all();
+        return view('Imunisasi.index', $data);
     }
 
     /**
