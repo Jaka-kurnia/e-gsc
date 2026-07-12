@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\JadwalExport;
 use App\Models\Jadwal;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class JadwalController extends Controller
 {
@@ -79,6 +82,32 @@ class JadwalController extends Controller
         $jadwal->update($validated);
 
         return redirect()->route('jadwal.index')->with('success', 'Data Jadwal berhasil diperbarui.');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $search = $request->input('search');
+        return Excel::download(new JadwalExport($search), 'data-jadwal.xlsx');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $search = $request->input('search');
+
+        $data = Jadwal::query()
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('nama_kegiatan', 'like', "%{$search}%")
+                        ->orWhere('tanggal_kegiatan', 'like', "%{$search}%")
+                        ->orWhere('catatan', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->get()
+            ->toArray();
+
+        $pdf = Pdf::loadView('Jadwal.pdf', compact('data'));
+        return $pdf->stream('data-jadwal.pdf');
     }
 
     public function destroy(Jadwal $jadwal)

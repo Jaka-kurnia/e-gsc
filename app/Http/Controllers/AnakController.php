@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AnakExport;
 use App\Models\Anak;
 use App\Models\Ibu;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AnakController extends Controller
 {
@@ -120,6 +123,39 @@ class AnakController extends Controller
         $anak->update($validated);
 
         return redirect()->route('anak.index')->with('success', 'Data Anak berhasil diperbarui.');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $search = $request->input('search');
+        return Excel::download(new AnakExport($search), 'data-anak.xlsx');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $search = $request->input('search');
+
+        $items = Anak::with('ibu')
+            ->when($search, function ($query, $search) {
+                $query->where('nama', 'like', "%{$search}%");
+            })
+            ->latest()
+            ->get();
+
+        $data = $items->map(function ($item) {
+            return [
+                'nik' => $item->nik,
+                'nama' => $item->nama,
+                'nama_orang_tua' => $item->ibu->nama_ibu ?? '-',
+                'tanggal_lahir' => $item->tanggal_lahir,
+                'jenis_kelamin' => $item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan',
+                'berat_badan' => $item->berat_badan ? $item->berat_badan . ' kg' : '-',
+                'tinggi_badan' => $item->tinggi_badan ? $item->tinggi_badan . ' cm' : '-',
+            ];
+        })->toArray();
+
+        $pdf = Pdf::loadView('Anak.pdf', compact('data'));
+        return $pdf->stream('data-anak.pdf');
     }
 
     /**

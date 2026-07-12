@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\IbuExport;
 use App\Models\Ibu;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class IbuController extends Controller
 {
@@ -105,6 +108,32 @@ class IbuController extends Controller
         $ibu->update($validated);
 
         return redirect()->route('ibu.index')->with('success', 'Data Orang Tua berhasil diperbarui.');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $search = $request->input('search');
+        return Excel::download(new IbuExport($search), 'data-orang-tua.xlsx');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $search = $request->input('search');
+
+        $data = Ibu::query()
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('nama_ibu', 'like', "%{$search}%")
+                        ->orWhere('nama_ayah', 'like', "%{$search}%")
+                        ->orWhere('nik', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->get()
+            ->toArray();
+
+        $pdf = Pdf::loadView('Ibu.pdf', compact('data'));
+        return $pdf->stream('data-orang-tua.pdf');
     }
 
     //    Fungsi Hapus

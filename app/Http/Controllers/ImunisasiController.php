@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ImunisasiExport;
 use App\Models\Imunisasi;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ImunisasiController extends Controller
 {
@@ -91,6 +94,29 @@ class ImunisasiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    public function exportExcel(Request $request)
+    {
+        $search = $request->input('search');
+        return Excel::download(new ImunisasiExport($search), 'data-imunisasi.xlsx');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $search = $request->input('search');
+
+        $data = Imunisasi::query()
+            ->when($search, function ($query, $search) {
+                $query->where('nama_imunisasi', 'like', "%{$search}%")
+                    ->orWhere('kode_imunisasi', 'like', "%{$search}%");
+            })
+            ->latest()
+            ->get()
+            ->toArray();
+
+        $pdf = Pdf::loadView('Imunisasi.pdf', compact('data'));
+        return $pdf->stream('data-imunisasi.pdf');
+    }
+
     public function destroy(Imunisasi $imunisasi)
     {
         $imunisasi->delete();
