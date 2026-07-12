@@ -129,7 +129,8 @@ class IbuController extends Controller
                 });
             })
             ->latest()
-            ->get()
+            ->paginate(8)
+            ->withQueryString()
             ->toArray();
 
         $pdf = Pdf::loadView('Ibu.pdf', compact('data'));

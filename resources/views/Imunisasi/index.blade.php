@@ -107,6 +107,8 @@
             </tbody>
 
         </x-table>
+                <x-paginate :paginator="$imunisasi" />
+
         @include('Imunisasi.modalTambah')
         @include('Imunisasi.script')
         @include('Imunisasi.detail')

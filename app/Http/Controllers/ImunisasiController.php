@@ -13,9 +13,18 @@ class ImunisasiController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['imunisasi'] = Imunisasi::all();
+        $search = $request->input('search');
+
+        $data['imunisasi'] = Imunisasi::query()
+            ->when($search, function ($query, $search) {
+                $query->where('kode_imunisasi', 'like', "%{$search}%")
+                    ->orWhere('nama_imunisasi', 'like', "%{$search}%");
+            })
+            ->latest()
+            ->paginate(8)
+            ->withQueryString();
         return view('Imunisasi.index', $data);
     }
 
