@@ -24,14 +24,14 @@
 
             <div class="flex justify-end gap-2">
                 <x-btn-success class="p-0! overflow-hidden shadow-sm">
-                    <a href="#" class="flex items-center gap-2 px-4 py-2 text-sm font-medium h-full w-full">
+                    <a href="{{ route('anak.excel', request()->query()) }}" class="flex items-center gap-2 px-4 py-2 text-sm font-medium h-full w-full">
                         <i class="fi fi-rr-file-excel text-base leading-none"></i>
                         <span>Export Excel</span>
                     </a>
                 </x-btn-success>
 
                 <x-btn-danger class="p-0! overflow-hidden shadow-sm">
-                    <a href="#" class="flex items-center gap-2 px-4 py-2 text-sm font-medium h-full w-full">
+                    <a href="{{ route('anak.pdf', request()->query()) }}" target="_blank" class="flex items-center gap-2 px-4 py-2 text-sm font-medium h-full w-full">
                         <i class="fi fi-rr-file-pdf text-base leading-none"></i>
                         <span>Export PDF</span>
                     </a>
