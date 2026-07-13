@@ -22,7 +22,7 @@ class AnakController extends Controller
             ->when($search, function ($query, $search) {
                 $query->where('nama', 'like', "%{$search}%");
             })
-            ->paginate(8)
+            ->paginate(4)
             ->withQueryString();
 
         $ibu = Ibu::all();

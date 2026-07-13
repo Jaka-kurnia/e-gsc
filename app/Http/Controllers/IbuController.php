@@ -24,7 +24,7 @@ class IbuController extends Controller
                 });
             })
             ->latest()
-            ->paginate(1)
+            ->paginate(4)
             ->withQueryString();
 
         return view('Ibu.index', $data);
@@ -129,7 +129,7 @@ class IbuController extends Controller
                 });
             })
             ->latest()
-            ->paginate(8)
+            ->paginate(5)
             ->withQueryString()
             ->toArray();
 

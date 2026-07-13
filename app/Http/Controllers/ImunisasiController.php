@@ -23,7 +23,7 @@ class ImunisasiController extends Controller
                     ->orWhere('nama_imunisasi', 'like', "%{$search}%");
             })
             ->latest()
-            ->paginate(8)
+            ->paginate(4)
             ->withQueryString();
         return view('Imunisasi.index', $data);
     }
