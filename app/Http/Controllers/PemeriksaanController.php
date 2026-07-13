@@ -12,7 +12,8 @@ class PemeriksaanController extends Controller
      */
     public function index()
     {
-        //
+        $data['pemeriksaan'] = Pemeriksaan::with(['jadwal', 'anak', 'user', 'approvedBy'])->paginate(4);
+        return view('Pemeriksaan.index', $data);
     }
 
     /**
@@ -28,7 +29,20 @@ class PemeriksaanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'user_id' => 'required',
+            'anak_id' => 'required',
+            'jadwal_id' => 'required',
+            'nomer_pemeriksaan' => 'required',
+            'approved_by' => 'required',
+            'tanggal_kunjungan' => 'required',
+            'metode_kunjungan' => 'required',
+            'umur_bulan' => 'required',
+            'approvel_status' => 'required',
+        ], []);
+
+        Pemeriksaan::create($validated);
+        return redirect()->route('pemeriksaan.index')->with('success', 'Pemeriksaan Berhasil Ditambahkan');
     }
 
     /**
@@ -44,7 +58,7 @@ class PemeriksaanController extends Controller
      */
     public function edit(Pemeriksaan $pemeriksaan)
     {
-        //
+        return response()->json($pemeriksaan);
     }
 
     /**
@@ -52,7 +66,20 @@ class PemeriksaanController extends Controller
      */
     public function update(Request $request, Pemeriksaan $pemeriksaan)
     {
-        //
+        $validated = $request->validate([
+            'user_id' => 'required',
+            'anak_id' => 'required',
+            'jadwal_id' => 'required',
+            'nomer_pemeriksaan' => 'required',
+            'approved_by' => 'required',
+            'tanggal_kunjungan' => 'required',
+            'metode_kunjungan' => 'required',
+            'umur_bulan' => 'required',
+            'approvel_status' => 'required',
+        ], []);
+
+        $pemeriksaan->update($validated);
+        return redirect()->route('pemeriksaan.index')->with('success', 'Pemeriksaan Berhasil Diubah');
     }
 
     /**
@@ -60,6 +87,7 @@ class PemeriksaanController extends Controller
      */
     public function destroy(Pemeriksaan $pemeriksaan)
     {
-        //
+        $pemeriksaan->delete();
+        return redirect()->route('pemeriksaan.index')->with('success', 'Pemeriksaan Berhasil Dihapus');
     }
 }
