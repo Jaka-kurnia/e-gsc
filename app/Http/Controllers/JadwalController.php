@@ -23,7 +23,7 @@ class JadwalController extends Controller
                 });
             })
             ->latest()
-            ->paginate(10)
+            ->paginate(4)
             ->withQueryString();
 
         return view('Jadwal.index', $data);

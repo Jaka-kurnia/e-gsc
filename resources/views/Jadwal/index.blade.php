@@ -56,12 +56,12 @@
                         <x-td>{{ \Carbon\Carbon::parse($item->tanggal_kegiatan)->translatedFormat('d F Y') }}</x-td>
                         <x-td>
                             @if ($item->status_logistik == 'Siap')
-                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-800 text-white">
                                     <i class="fi fi-rr-checkbox text-xs leading-none"></i>
                                     {{ $item->status_logistik }}
                                 </span>
                             @else
-                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-800 text-white">
                                     <i class="fi fi-rr-time-past text-xs leading-none"></i>
                                     {{ $item->status_logistik }}
                                 </span>

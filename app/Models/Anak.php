@@ -21,4 +21,9 @@ class Anak extends Model
     {
         return $this->belongsTo(Ibu::class, 'ibu_id');
     }
+
+    public function pemeriksaans()
+    {
+        return $this->hasMany(Pemeriksaan::class, 'anak_id');
+    }
 }

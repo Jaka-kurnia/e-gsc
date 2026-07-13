@@ -14,4 +14,10 @@ class Jadwal extends Model
         'status_logistik',
         'catatan',
     ];
+
+
+    public function pemeriksaans()
+    {
+        return $this->hasMany(Pemeriksaan::class, 'jadwal_id');
+    }
 }
