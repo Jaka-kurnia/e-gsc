@@ -4,6 +4,7 @@ use App\Http\Controllers\AnakController;
 use App\Http\Controllers\IbuController;
 use App\Http\Controllers\ImunisasiController;
 use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\PemeriksaanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -25,3 +26,6 @@ Route::resource('jadwal', JadwalController::class);
 Route::get('imunisasi/excel', [ImunisasiController::class, 'exportExcel'])->name('imunisasi.excel');
 Route::get('imunisasi/pdf', [ImunisasiController::class, 'exportPdf'])->name('imunisasi.pdf');
 Route::resource('imunisasi',ImunisasiController::class);
+Route::get('pemeriksaan/excel', [PemeriksaanController::class, 'exportExcel'])->name('pemeriksaan.excel');
+Route::get('pemeriksaan/pdf', [PemeriksaanController::class, 'exportPdf'])->name('pemeriksaan.pdf');
+Route::resource('pemeriksaan', PemeriksaanController::class);
