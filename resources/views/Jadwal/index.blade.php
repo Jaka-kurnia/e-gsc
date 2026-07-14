@@ -44,7 +44,7 @@
                     <x-th>Nama Kegiatan</x-th>
                     <x-th>Tanggal Kegiatan</x-th>
                     <x-th>Status Logistik</x-th>
-                    <x-th>Catatan</x-th>
+                    {{-- <x-th>Catatan</x-th> --}}
                     <x-th class="text-center">Aksi</x-th>
                 </tr>
             </thead>
@@ -67,11 +67,11 @@
                                 </span>
                             @endif
                         </x-td>
-                        <x-td>
+                        {{-- <x-td>
                             <div class="max-w-40 truncate" title="{{ $item->catatan }}">
                                 {{ $item->catatan ?? '-' }}
                             </div>
-                        </x-td>
+                        </x-td> --}}
                         <x-td class="text-center">
                             <div class="flex justify-center items-center gap-1.5">
                                 <x-btn-primary type="button"

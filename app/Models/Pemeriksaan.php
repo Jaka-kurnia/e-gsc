@@ -45,5 +45,8 @@ class Pemeriksaan extends Model
         return $this->belongsTo(User::class, 'approved_by');
     }
 
-    
+    public function pemeriksaanAntropometris()
+    {
+        return $this->hasMany(PemeriksaanAntropometri::class, 'pemeriksaan_id');
+    }
 }
