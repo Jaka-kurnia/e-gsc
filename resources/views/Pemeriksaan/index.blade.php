@@ -54,8 +54,8 @@
                         <x-td class="text-center">{{ $loop->iteration }}</x-td>
                         <x-td>{{ $item->nomor_antri }}</x-td>
                         <x-td>{{ $item->anak->nama }}</x-td>
-                        <x-td>
-                            {{ $item->metode_kunjungan === 'hari_h' ? 'Hari H' : 'Sweeping' }}
+                        <x-td class="">
+                            {{ $item->metode_kunjungan === 'hari_h' ? 'Langsung di tempat' : 'Sweeping' }}
                         </x-td>
                         <x-td>{{ \Carbon\Carbon::parse($item->tanggal_kunjungan)->translatedFormat('d F Y') }}</x-td>
 
