@@ -19,14 +19,14 @@
                 this.title = "Tambah Data Pemeriksaan";
                 this.action = "{{ route('pemeriksaan.store') }}";
                 this.isEdit = false;
-                this.nomor_pemeriksaan = '';
+                this.nomor_pemeriksaan = '{{ $nextNomorPemeriksaan }}';
+                this.nomor_antri = '{{ $nextNomorAntri }}';
                 this.anak_id = '';
                 this.jadwal_id = '';
                 this.user_id = '';
                 this.approved_by = '';
-                this.nomor_antri = '';
                 this.metode_kunjungan = '';
-                this.tanggal_kunjungan = '';
+                this.tanggal_kunjungan = new Date().toISOString().split('T')[0];
                 this.umur_bulan = '';
                 this.approvel_status = '';
                 this.$dispatch('open-modal', 'modal_pemeriksaan');

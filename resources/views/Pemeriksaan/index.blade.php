@@ -12,24 +12,23 @@
         </x-btn-primary>
     </x-slot>
 
-    <div x-data="jadwalForm()" x-on:open-add-modal.window="openAddModal()"
+    <div x-data="pemeriksaanForm()" x-on:open-add-modal.window="openAddModal()"
         x-on:open-edit-modal.window="openEditModal($event.detail)" class="py-6">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-            <!-- Form Search -->
             <form action="{{ url()->current() }}" method="GET" class="w-full sm:w-auto">
-                <x-search name="search" placeholder="Cari Nama Kegiatan..." x-model="search" />
+                <x-search name="search" placeholder="Cari Nama Anak atau Nomor Antrean..." />
             </form>
 
             <div class="flex justify-end gap-2">
                 <x-btn-success class="p-0! overflow-hidden shadow-sm">
-                    <a href="#" class="flex items-center gap-2 px-4 py-2 text-sm font-medium h-full w-full">
+                    <a href="{{ route('pemeriksaan.excel', request()->query()) }}" class="flex items-center gap-2 px-4 py-2 text-sm font-medium h-full w-full">
                         <i class="fi fi-rr-file-excel text-base leading-none"></i>
                         <span>Export Excel</span>
                     </a>
                 </x-btn-success>
 
                 <x-btn-danger class="p-0! overflow-hidden shadow-sm">
-                    <a href="#" target="_blank"
+                    <a href="{{ route('pemeriksaan.pdf', request()->query()) }}" target="_blank"
                         class="flex items-center gap-2 px-4 py-2 text-sm font-medium h-full w-full">
                         <i class="fi fi-rr-file-pdf text-base leading-none"></i>
                         <span>Export PDF</span>
@@ -72,9 +71,7 @@
                                     tanggal_kunjungan: '{{ $item->tanggal_kunjungan->translatedFormat('d F Y') }}',
                                     umur_bulan: '{{ $item->umur_bulan }} Bulan',
                                     approvel_status: '{{ $item->approvel_status }}',
-        
-                                    // Relasi Eager Loading (Pastikan nama relasi ini sesuai di Controller)
-                                    nama_anak: '{{ $item->anak->nama_anak ?? '-' }}',
+                                    nama_anak: '{{ $item->anak->nama ?? '-' }}',
                                     nama_kegiatan: '{{ $item->jadwal->nama_kegiatan ?? '-' }}',
                                     penginput: '{{ $item->user->name ?? '-' }}',
                                     verifikator: '{{ $item->approvedBy->name ?? 'Belum Diverifikasi' }}'
@@ -88,7 +85,7 @@
                                     <i class="fi fi-rr-edit text-base leading-none"></i>
                                 </x-btn-edit>
 
-                                <form action="{{ route('jadwal.destroy', $item->id) }}" method="POST"
+                                <form action="{{ route('pemeriksaan.destroy', $item->id) }}" method="POST"
                                     id="delete-form-{{ $item->id }}" class="m-0 inline-block">
                                     @csrf
                                     @method('DELETE')
