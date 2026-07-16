@@ -12,7 +12,7 @@
         </x-btn-primary>
     </x-slot>
 
-    <div x-data="pemeriksaanAntropometriForm()" x-on:open-add-modal.window="openAddModal()"
+    <div x-data="pemeriksaanKonselingForm()" x-on:open-add-modal.window="openAddModal()"
         x-on:open-edit-modal.window="openEditModal($event.detail)" class="py-6">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <form action="{{ url()->current() }}" method="GET" class="w-full sm:w-auto">
@@ -21,7 +21,7 @@
 
             <div class="flex justify-end gap-2">
                 <x-btn-success class="p-0! overflow-hidden shadow-sm">
-                    <a href="#"
+                    <a href="{{ route('pemeriksaan_konseling.excel', request()->query()) }}"
                         class="flex items-center gap-2 px-4 py-2 text-sm font-medium h-full w-full">
                         <i class="fi fi-rr-file-excel text-base leading-none"></i>
                         <span>Export Excel</span>
@@ -29,7 +29,7 @@
                 </x-btn-success>
 
                 <x-btn-danger class="p-0! overflow-hidden shadow-sm">
-                    <a href="#" target="_blank"
+                    <a href="{{ route('pemeriksaan_konseling.pdf', request()->query()) }}" target="_blank"
                         class="flex items-center gap-2 px-4 py-2 text-sm font-medium h-full w-full">
                         <i class="fi fi-rr-file-pdf text-base leading-none"></i>
                         <span>Export PDF</span>
@@ -42,19 +42,97 @@
             <thead>
                 <tr>
                     <x-th class="text-center w-12">No</x-th>
+                    <x-th>No. Pemeriksaan</x-th>
+                    <x-th>Nama Anak</x-th>
                     <x-th>Catatan Konseling</x-th>
-                    <x-th>Pemberian PMT</x-th>
+                    <x-th class="text-center">Pemberian PMT</x-th>
                     <x-th class="text-center">Aksi</x-th>
                 </tr>
             </thead>
             <tbody>
-               
+                @forelse ($pemeriksaanKonseling as $item)
+                    <tr>
+                        <x-td class="text-center">{{ $loop->iteration }}</x-td>
+                        <x-td>{{ $item->pemeriksaan->nomor_pemeriksaan ?? '-' }}</x-td>
+                        <x-td>{{ $item->pemeriksaan->anak->nama ?? '-' }}</x-td>
+                        <x-td>
+                            <div class="max-w-60 truncate" title="{{ $item->konseling }}">
+                                {{ $item->konseling }}
+                            </div>
+                        </x-td>
+                        <x-td class="text-center">
+                            @if ($item->pemberian_pmt)
+                                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold text-white bg-green-700">
+                                    Ya
+                                </span>
+                            @else
+                                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold text-white bg-red-700">
+                                    Tidak
+                                </span>
+                            @endif
+                        </x-td>
+
+                        <x-td class="text-center">
+                            <div class="flex justify-center items-center gap-1.5">
+                                <x-btn-primary type="button"
+                                    class="w-9 h-9 p-0! flex items-center justify-center shadow-sm" title="Detail"
+                                    x-on:click="$dispatch('open-detail-modal', {
+                                     nomor_pemeriksaan: '{{ $item->pemeriksaan->nomor_pemeriksaan ?? '-' }}',
+                                     nama_anak: '{{ $item->pemeriksaan->anak->nama ?? '-' }}',
+                                     konseling: '{{ addslashes($item->konseling) }}',
+                                     pemberian_pmt: '{{ $item->pemberian_pmt ? 'Ya' : 'Tidak' }}'
+                             })">
+                                    <i class="fi fi-rr-eye text-base leading-none"></i>
+                                </x-btn-primary>
+
+                                <x-btn-edit type="button"
+                                    class="w-9 h-9 p-0! flex items-center justify-center shadow-sm" title="Edit Data"
+                                    x-on:click="$dispatch('open-edit-modal', {{ json_encode($item) }})">
+                                    <i class="fi fi-rr-edit text-base leading-none"></i>
+                                </x-btn-edit>
+
+                                <form action="{{ route('pemeriksaan_konseling.destroy', $item->pemeriksaan_id) }}"
+                                    method="POST" id="delete-form-{{ $item->pemeriksaan_id }}"
+                                    class="inline-block m-0">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-btn-delete type="button"
+                                        class="w-9 h-9 p-0! flex items-center justify-center shadow-sm"
+                                        onclick="confirmDelete('{{ $item->pemeriksaan_id }}')" title="Hapus Data">
+                                        <i class="fi fi-rr-trash text-base leading-none"></i>
+                                    </x-btn-delete>
+                                </form>
+                            </div>
+                        </x-td>
+                    </tr>
+                @empty
+                    <tr>
+                        <x-td colspan="7" class="text-center p-0">
+                            <div class="flex items-center justify-center py-10 w-full">
+                                @if (request('search'))
+                                    <span
+                                        class="text-sm text-white bg-red-700 font-semibold px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 border border-amber-200 shadow-sm mx-auto">
+                                        <i class="fi fi-rr-search-alt text-lg leading-none"></i>
+                                        <span>Data dengan kata kunci "{{ request('search') }}" tidak ditemukan</span>
+                                    </span>
+                                @else
+                                    <span
+                                        class="text-sm text-white bg-red-700 font-semibold px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 border border-red-200 shadow-sm mx-auto">
+                                        <i class="fi fi-rr-file-exclamation text-lg leading-none"></i>
+                                        <span>Data Pemeriksaan Konseling Belum Tersedia</span>
+                                    </span>
+                                @endif
+                            </div>
+                        </x-td>
+                    </tr>
+                @endforelse
             </tbody>
         </x-table>
-        {{-- <x-paginate :paginator="$pemeriksaanAntropometri" /> --}}
+        <x-paginate :paginator="$pemeriksaanKonseling" />
 
-
+        @include('PemeriksaanKonseling.detail')
+        @include('PemeriksaanKonseling.modalTambah')
     </div>
 
- 
+    @include('PemeriksaanKonseling.script')
 </x-app-layout>

@@ -17,4 +17,14 @@ class PemeriksaanKonseling extends Model
         'konseling',
         'pemberian_pmt',
     ];
+
+    public function pemeriksaan()
+    {
+        return $this->belongsTo(Pemeriksaan::class, 'pemeriksaan_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
