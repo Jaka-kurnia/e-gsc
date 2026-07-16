@@ -38,7 +38,7 @@ class JadwalController extends Controller
     {
         $validated = $request->validate([
             'tanggal_kegiatan' => 'required|date',
-            'nama_kegiatan' => 'required|string|max:255',
+            'nama_kegiatan' => 'required|string|max:200',
             'status_logistik' => 'required|in:Belum Siap,Siap',
             'catatan' => 'nullable|string',
         ], [

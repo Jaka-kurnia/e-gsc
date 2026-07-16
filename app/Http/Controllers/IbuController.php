@@ -60,6 +60,14 @@ class IbuController extends Controller
             'rt.required' => 'RT harus diisi tidak boleh kosong.',
             'rw.required' => 'RW harus diisi tidak boleh kosong.',
             'alamat.required' => 'Alamat harus diisi tidak boleh kosong.',
+            'alamat.max' => 'Alamat tidak boleh lebih dari 255 karakter.',
+            'no_hp.max' => 'Nomor HP tidak boleh lebih dari 14 karakter.',
+            'rt.max' => 'RT tidak boleh lebih dari 4 karakter.',
+            'rw.max' => 'RW tidak boleh lebih dari 4 karakter.',
+            'nik.max' => 'NIK tidak boleh lebih dari 16 karakter.',
+            'nama_ibu.string' => 'Nama Ibu harus berupa huruf.',
+            'nama_ayah.string' => 'Nama Ayah harus berupa huruf.',
+
         ]);
 
         Ibu::create($validated);
@@ -103,6 +111,13 @@ class IbuController extends Controller
             'rt.required' => 'RT harus diisi tidak boleh kosong.',
             'rw.required' => 'RW harus diisi tidak boleh kosong.',
             'alamat.required' => 'Alamat harus diisi tidak boleh kosong.',
+            'alamat.max' => 'Alamat tidak boleh lebih dari 255 karakter.',
+            'no_hp.max' => 'Nomor HP tidak boleh lebih dari 14 karakter.',
+            'rt.max' => 'RT tidak boleh lebih dari 4 karakter.',
+            'rw.max' => 'RW tidak boleh lebih dari 4 karakter.',
+            'nik.max' => 'NIK tidak boleh lebih dari 16 karakter.',
+            'nama_ibu.string' => 'Nama Ibu harus berupa huruf.',
+            'nama_ayah.string' => 'Nama Ayah harus berupa huruf.',
         ]);
 
         $ibu->update($validated);

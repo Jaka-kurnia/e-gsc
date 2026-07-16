@@ -6,6 +6,7 @@ use App\Exports\AnakExport;
 use App\Models\Anak;
 use App\Models\Ibu;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -163,8 +164,17 @@ class AnakController extends Controller
      */
     public function destroy(Anak $anak)
     {
-        $anak->delete();
+        try {
+            $anak->delete();
 
-        return redirect()->route('anak.index')->with('success', 'Data Anak berhasil dihapus.');
+            return redirect()->back()->with('success', 'Data anak berhasil dihapus!');
+        } catch (QueryException $e) {
+            // cek error foregin key
+            if ($e->getCode() === '23000') {
+                return redirect()->back()->with('error', 'Data anak tidak bisa dihapus karena masih memiliki riwayat pemeriksaan aktif.');
+            }
+
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus data.');
+        }
     }
 }
