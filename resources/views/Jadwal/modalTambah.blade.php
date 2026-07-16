@@ -47,5 +47,20 @@
                 </x-btn-primary>
             </div>
         </form>
+
+        <!-- Delete form (outside main form to avoid nested form issues) -->
+        <div x-show="isEdit" class="mt-4 pt-4 border-t border-gray-100">
+            <form x-bind:action="`/jadwal/${editId}`" method="POST"
+                x-bind:id="`delete-form-${editId}`" class="inline-block m-0">
+                @csrf
+                @method('DELETE')
+                <x-btn-delete type="button"
+                    x-on:click="confirmDelete(editId)"
+                    class="w-full px-4 py-2 text-sm font-medium flex items-center justify-center gap-2">
+                    <i class="fi fi-rr-trash text-base leading-none"></i>
+                    Hapus Data Ini
+                </x-btn-delete>
+            </form>
+        </div>
     </div>
 </x-modal>

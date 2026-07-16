@@ -23,6 +23,7 @@ Route::resource('anak', AnakController::class);
 
 Route::get('jadwal/excel', [JadwalController::class, 'exportExcel'])->name('jadwal.excel');
 Route::get('jadwal/pdf', [JadwalController::class, 'exportPdf'])->name('jadwal.pdf');
+Route::patch('jadwal/{jadwal}/move', [JadwalController::class, 'move'])->name('jadwal.move');
 Route::resource('jadwal', JadwalController::class);
 
 Route::get('imunisasi/excel', [ImunisasiController::class, 'exportExcel'])->name('imunisasi.excel');
