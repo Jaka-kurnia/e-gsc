@@ -49,4 +49,9 @@ class Pemeriksaan extends Model
     {
         return $this->hasMany(PemeriksaanAntropometri::class, 'pemeriksaan_id');
     }
+
+    public function pemeriksaanKonseling()
+    {
+        return $this->hasOne(PemeriksaanKonseling::class, 'pemeriksaan_id');
+    }
 }

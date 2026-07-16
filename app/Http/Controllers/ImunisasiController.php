@@ -43,7 +43,7 @@ class ImunisasiController extends Controller
     {
         $validate = $request->validate([
             'kode_imunisasi' => 'required|string|max:10|unique:imunisasis,kode_imunisasi',
-            'nama_imunisasi' => 'required|string',
+            'nama_imunisasi' => 'required|string|max:100',
             'deskripsi' => 'nullable',
         ], [
             'kode_imunisasi.required' => 'Kode Imunisasi harus diisi tidak boleh kosong.',

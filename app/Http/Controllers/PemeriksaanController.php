@@ -9,6 +9,7 @@ use App\Models\Pemeriksaan;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
 class PemeriksaanController extends Controller
@@ -16,28 +17,32 @@ class PemeriksaanController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $today = now()->format('Ymd');
 
+        // 1. Memperbaiki logika pencarian (Logical Grouping) agar query OR tidak merusak pencarian lain
         $data['pemeriksaan'] = Pemeriksaan::with(['jadwal', 'anak', 'user', 'approvedBy'])
             ->when($search, function ($query, $search) {
-                $query->whereHas('anak', function ($q) use ($search) {
-                    $q->where('nama', 'like', "%{$search}%");
-                })->orWhere('nomor_antri', 'like', "%{$search}%");
+                $query->where(function ($q) use ($search) {
+                    $q->whereHas('anak', fn($anakQuery) => $anakQuery->where('nama', 'like', "%{$search}%"))
+                        ->orWhere('nomor_antri', 'like', "%{$search}%");
+                });
             })
             ->paginate(4)
             ->withQueryString();
 
+        // 2. Menggunakan Compact jika nama key array sama dengan nama variabel (Opsional, tapi di bawah tetap pakai $data)
         $data['anak'] = Anak::all();
         $data['jadwal'] = Jadwal::all();
         $data['users'] = User::all();
 
-        $today = now()->format('Ymd');
+        // 3. Peringkas pencarian nomor pemeriksaan terakhir menggunakan string helpers
+        $lastToday = Pemeriksaan::where('nomor_pemeriksaan', 'like', "PRK-{$today}-%")->latest('id')->first();
+        $nextNum = $lastToday ? ((int) Str::afterLast($lastToday->nomor_pemeriksaan, '-')) + 1 : 1;
+        $data['nextNomorPemeriksaan'] = "PRK-{$today}-" . str_pad($nextNum, 4, '0', STR_PAD_LEFT);
 
-        $lastToday = Pemeriksaan::where('nomor_pemeriksaan', 'like', 'PRK-' . $today . '-%')->latest('id')->first();
-        $nextNum = $lastToday ? ((int) substr($lastToday->nomor_pemeriksaan, -4)) + 1 : 1;
-        $data['nextNomorPemeriksaan'] = 'PRK-' . $today . '-' . str_pad($nextNum, 4, '0', STR_PAD_LEFT);
-
+        // 4. Peringkas pencarian nomor antrean
         $lastTodayAntri = Pemeriksaan::whereDate('tanggal_kunjungan', today())->latest('id')->first();
-        $nextAntri = $lastTodayAntri ? ((int) $lastTodayAntri->nomor_antri) + 1 : 1;
+        $nextAntri = $lastTodayAntri ? ($lastTodayAntri->nomor_antri + 1) : 1;
         $data['nextNomorAntri'] = str_pad($nextAntri, 4, '0', STR_PAD_LEFT);
 
         return view('Pemeriksaan.index', $data);
