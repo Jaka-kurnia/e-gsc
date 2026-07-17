@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             AnakSeeder::class,
             ImunisasiSeeder::class,
             JadwalSeeder::class,
+            PemeriksaanSeeder::class,
         ]);
     }
 }

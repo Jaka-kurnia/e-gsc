@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('anak_id')->constrained('anaks')->onDelete('restrict')->onUpdate('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('restrict')->onUpdate('cascade');
             $table->foreignId('approved_by')->nullable()->constrained('users')->onDelete('set null')->onUpdate('cascade');
-            $table->char('nomor_antri', 4);
+            $table->string('nomor_antri', 10);
             $table->enum('metode_kunjungan', ['hari_h', 'sweeping'])->default('hari_h');
             $table->date('tanggal_kunjungan');
             $table->integer('umur_bulan');

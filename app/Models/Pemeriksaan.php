@@ -54,4 +54,10 @@ class Pemeriksaan extends Model
     {
         return $this->hasOne(PemeriksaanKonseling::class, 'pemeriksaan_id');
     }
+
+
+    public function pemeriksaanMedis()
+    {
+        return $this->hasMany(PemeriksaanMedis::class, 'pemeriksaan_id');
+    }
 }

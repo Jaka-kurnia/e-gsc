@@ -7,6 +7,7 @@ use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\PemeriksaanAntropometriController;
 use App\Http\Controllers\PemeriksaanController;
 use App\Http\Controllers\PemeriksaanKonselingController;
+use App\Http\Controllers\PemeriksaanMedisController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -42,3 +43,7 @@ Route::resource('pemeriksaan_antropometri', PemeriksaanAntropometriController::c
 Route::get('pemeriksaan_konseling/excel', [PemeriksaanKonselingController::class, 'exportExcel'])->name('pemeriksaan_konseling.excel');
 Route::get('pemeriksaan_konseling/pdf', [PemeriksaanKonselingController::class, 'exportPdf'])->name('pemeriksaan_konseling.pdf');
 Route::resource('pemeriksaan_konseling',PemeriksaanKonselingController::class);
+
+Route::get('pemeriksaan_medis/excel', [PemeriksaanMedisController::class, 'exportExcel'])->name('pemeriksaan_medis.excel');
+Route::get('pemeriksaan_medis/pdf', [PemeriksaanMedisController::class, 'exportPdf'])->name('pemeriksaan_medis.pdf');
+Route::resource('pemeriksaan_medis',PemeriksaanMedisController::class);

@@ -27,6 +27,8 @@ class PemeriksaanController extends Controller
                         ->orWhere('nomor_antri', 'like', "%{$search}%");
                 });
             })
+            ->orderBy('tanggal_kunjungan', 'asc')
+            ->orderBy('nomor_antri', 'asc')
             ->paginate(4)
             ->withQueryString();
 
@@ -42,8 +44,8 @@ class PemeriksaanController extends Controller
 
         // 4. Peringkas pencarian nomor antrean
         $lastTodayAntri = Pemeriksaan::whereDate('tanggal_kunjungan', today())->latest('id')->first();
-        $nextAntri = $lastTodayAntri ? ($lastTodayAntri->nomor_antri + 1) : 1;
-        $data['nextNomorAntri'] = str_pad($nextAntri, 4, '0', STR_PAD_LEFT);
+        $nextAntri = $lastTodayAntri ? ((int) substr($lastTodayAntri->nomor_antri, 2)) + 1 : 1;
+        $data['nextNomorAntri'] = 'A-' . str_pad($nextAntri, 3, '0', STR_PAD_LEFT);
 
         return view('Pemeriksaan.index', $data);
     }
@@ -73,8 +75,8 @@ class PemeriksaanController extends Controller
         $validated['nomor_pemeriksaan'] = 'PRK-' . $today . '-' . str_pad($nextNum, 4, '0', STR_PAD_LEFT);
 
         $lastTodayAntri = Pemeriksaan::whereDate('tanggal_kunjungan', today())->latest('id')->first();
-        $nextAntri = $lastTodayAntri ? ((int) $lastTodayAntri->nomor_antri) + 1 : 1;
-        $validated['nomor_antri'] = str_pad($nextAntri, 4, '0', STR_PAD_LEFT);
+        $nextAntri = $lastTodayAntri ? ((int) substr($lastTodayAntri->nomor_antri, 2)) + 1 : 1;
+        $validated['nomor_antri'] = 'A-' . str_pad($nextAntri, 3, '0', STR_PAD_LEFT);
 
         Pemeriksaan::create($validated);
         return redirect()->route('pemeriksaan.index')->with('success', 'Pemeriksaan Berhasil Ditambahkan');
