@@ -29,4 +29,9 @@ class PemeriksaanMedis extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function imunisasis()
+    {
+        return $this->belongsToMany(Imunisasi::class, 'detail_imunisasis', 'pemeriksaan_medis_id', 'imunisasi_id', 'pemeriksaan_id', 'id');
+    }
 }

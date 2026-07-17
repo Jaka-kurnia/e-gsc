@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\PemeriksaanMedisExport;
+use App\Models\Imunisasi;
 use App\Models\Pemeriksaan;
 use App\Models\PemeriksaanMedis;
 use App\Models\User;
@@ -16,7 +17,7 @@ class PemeriksaanMedisController extends Controller
     {
         $search = $request->input('search');
 
-        $pemeriksaanMedis = PemeriksaanMedis::with(['pemeriksaan.anak', 'pemeriksaan.jadwal', 'user'])
+        $pemeriksaanMedis = PemeriksaanMedis::with(['pemeriksaan.anak', 'pemeriksaan.jadwal', 'user', 'imunisasis'])
             ->when($search, function ($query, $search) {
                 $query->whereHas('pemeriksaan.anak', function ($q) use ($search) {
                     $q->where('nama', 'like', "%{$search}%");
@@ -33,8 +34,9 @@ class PemeriksaanMedisController extends Controller
 
         $pemeriksaans = Pemeriksaan::all();
         $users = User::all();
+        $imunisasis = Imunisasi::all();
 
-        return view('PemeriksaanMedis.index', compact('pemeriksaanMedis', 'pemeriksaans', 'users'));
+        return view('PemeriksaanMedis.index', compact('pemeriksaanMedis', 'pemeriksaans', 'users', 'imunisasis'));
     }
 
     public function create()
@@ -51,6 +53,8 @@ class PemeriksaanMedisController extends Controller
             'pemberian_obat_cacing' => 'nullable|boolean',
             'status_rujukan_medis' => 'nullable|boolean',
             'catatan' => 'nullable|string',
+            'imunisasi_id' => 'nullable|array',
+            'imunisasi_id.*' => 'exists:imunisasis,id',
         ], [
             'pemeriksaan_id.required' => 'Pemeriksaan harus dipilih.',
             'pemeriksaan_id.exists' => 'Pemeriksaan yang dipilih tidak valid.',
@@ -58,29 +62,39 @@ class PemeriksaanMedisController extends Controller
             'pemberian_vitamin.in' => 'Pilihan vitamin tidak valid.',
             'pemberian_obat_cacing.boolean' => 'Pemberian obat cacing tidak valid.',
             'status_rujukan_medis.boolean' => 'Status rujukan medis tidak valid.',
+            'imunisasi_id.array' => 'Data imunisasi tidak valid.',
+            'imunisasi_id.*.exists' => 'Jenis imunisasi yang dipilih tidak ada.',
         ]);
 
         $validated['pemberian_obat_cacing'] = $request->boolean('pemberian_obat_cacing');
         $validated['status_rujukan_medis'] = $request->boolean('status_rujukan_medis');
 
-        PemeriksaanMedis::create($validated);
+        $pemeriksaanMedis = PemeriksaanMedis::create($validated);
+
+        if ($request->has('imunisasi_id')) {
+            $pemeriksaanMedis = PemeriksaanMedis::find($validated['pemeriksaan_id']);
+            $pemeriksaanMedis->imunisasis()->sync($request->imunisasi_id);
+        }
 
         return redirect()->route('pemeriksaan_medis.index')->with('success', 'Data Pemeriksaan Medis berhasil ditambahkan.');
     }
 
-    public function show(PemeriksaanMedis $pemeriksaanMedis)
+    public function show($id)
     {
+        $pemeriksaanMedis = PemeriksaanMedis::findOrFail($id);
         //
     }
 
-    public function edit(PemeriksaanMedis $pemeriksaanMedis)
+    public function edit($id)
     {
-        $pemeriksaanMedis->load(['pemeriksaan', 'user']);
+        $pemeriksaanMedis = PemeriksaanMedis::with(['pemeriksaan', 'user', 'imunisasis'])->findOrFail($id);
         return response()->json($pemeriksaanMedis);
     }
 
-    public function update(Request $request, PemeriksaanMedis $pemeriksaanMedis)
+    public function update(Request $request, $id)
     {
+        $pemeriksaanMedis = PemeriksaanMedis::findOrFail($id);
+
         $validated = $request->validate([
             'pemeriksaan_id' => 'required|exists:pemeriksaans,id',
             'user_id' => 'nullable|exists:users,id',
@@ -88,6 +102,8 @@ class PemeriksaanMedisController extends Controller
             'pemberian_obat_cacing' => 'nullable|boolean',
             'status_rujukan_medis' => 'nullable|boolean',
             'catatan' => 'nullable|string',
+            'imunisasi_id' => 'nullable|array',
+            'imunisasi_id.*' => 'exists:imunisasis,id',
         ], [
             'pemeriksaan_id.required' => 'Pemeriksaan harus dipilih.',
             'pemeriksaan_id.exists' => 'Pemeriksaan yang dipilih tidak valid.',
@@ -95,6 +111,8 @@ class PemeriksaanMedisController extends Controller
             'pemberian_vitamin.in' => 'Pilihan vitamin tidak valid.',
             'pemberian_obat_cacing.boolean' => 'Pemberian obat cacing tidak valid.',
             'status_rujukan_medis.boolean' => 'Status rujukan medis tidak valid.',
+            'imunisasi_id.array' => 'Data imunisasi tidak valid.',
+            'imunisasi_id.*.exists' => 'Jenis imunisasi yang dipilih tidak ada.',
         ]);
 
         $validated['pemberian_obat_cacing'] = $request->boolean('pemberian_obat_cacing');
@@ -102,11 +120,18 @@ class PemeriksaanMedisController extends Controller
 
         $pemeriksaanMedis->update($validated);
 
+        if ($request->has('imunisasi_id')) {
+            $pemeriksaanMedis->imunisasis()->sync($request->imunisasi_id);
+        } else {
+            $pemeriksaanMedis->imunisasis()->detach();
+        }
+
         return redirect()->route('pemeriksaan_medis.index')->with('success', 'Data Pemeriksaan Medis berhasil diperbarui.');
     }
 
-    public function destroy(PemeriksaanMedis $pemeriksaanMedis)
+    public function destroy($id)
     {
+        $pemeriksaanMedis = PemeriksaanMedis::findOrFail($id);
         $pemeriksaanMedis->delete();
 
         return redirect()->route('pemeriksaan_medis.index')->with('success', 'Data Pemeriksaan Medis berhasil dihapus.');
@@ -122,7 +147,7 @@ class PemeriksaanMedisController extends Controller
     {
         $search = $request->input('search');
 
-        $items = PemeriksaanMedis::with(['pemeriksaan.anak', 'pemeriksaan.jadwal', 'user'])
+        $items = PemeriksaanMedis::with(['pemeriksaan.anak', 'pemeriksaan.jadwal', 'user', 'imunisasis'])
             ->when($search, function ($query, $search) {
                 $query->whereHas('pemeriksaan.anak', function ($q) use ($search) {
                     $q->where('nama', 'like', "%{$search}%");
@@ -130,7 +155,10 @@ class PemeriksaanMedisController extends Controller
                     $q->where('nomor_pemeriksaan', 'like', "%{$search}%");
                 });
             })
-            ->latest()
+            ->join('pemeriksaans', 'pemeriksaan_medis.pemeriksaan_id', '=', 'pemeriksaans.id')
+            ->orderBy('pemeriksaans.tanggal_kunjungan', 'asc')
+            ->orderBy('pemeriksaans.nomor_pemeriksaan', 'asc')
+            ->select('pemeriksaan_medis.*')
             ->get();
 
         $data = $items->map(function ($item) {
@@ -140,6 +168,7 @@ class PemeriksaanMedisController extends Controller
                 'pemberian_vitamin' => ucwords(str_replace('_', ' ', $item->pemberian_vitamin)),
                 'pemberian_obat_cacing' => $item->pemberian_obat_cacing ? 'Ya' : 'Tidak',
                 'status_rujukan_medis' => $item->status_rujukan_medis ? 'Ya' : 'Tidak',
+                'imunisasi' => $item->imunisasis->pluck('nama_imunisasi')->join(', ') ?: '-',
                 'catatan' => $item->catatan ?? '-',
             ];
         })->toArray();

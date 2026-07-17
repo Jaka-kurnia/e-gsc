@@ -12,4 +12,9 @@ class Imunisasi extends Model
         'nama_imunisasi',
         'deskripsi',
     ];
+
+    public function pemeriksaanMedis()
+    {
+        return $this->belongsToMany(PemeriksaanMedis::class, 'detail_imunisasis', 'imunisasi_id', 'pemeriksaan_medis_id', 'id', 'pemeriksaan_id');
+    }
 }
