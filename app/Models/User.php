@@ -55,4 +55,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Pemeriksaan::class, 'approved_by');
     }
+
+    
 }

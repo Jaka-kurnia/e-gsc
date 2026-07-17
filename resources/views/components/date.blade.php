@@ -4,23 +4,16 @@
     $hasError = $name ? $errors->has($name) : false;
 @endphp
 
-<div class="relative w-full" x-data="{
-    // Sinkronisasi otomatis jika menggunakan x-model dari luar
-    value: @entangle($attributes->wire('model')).defer || ''
-}">
+<div class="relative w-full">
     <input type="date" @disabled($disabled)
         {{ $attributes->merge([
             'class' =>
-                // Base Class Style khas Tabler (Padding, font, tinggi pas, & custom icon)
                 'block w-full rounded-md text-sm text-neutral-800 bg-white border pr-3 pl-10 py-2 transition-all duration-200 ease-in-out ' .
                 'appearance-none [color-scheme:light] ' .
-                // State Normal (Border abu tipis khas Tabler & soft shadow)
                 'border-neutral-300 shadow-[0_1px_3px_0_rgba(0,0,0,0.05)] ' .
                 'focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none ' .
-                // State Error (Jika validasi Laravel gagal)
                 ($hasError ? '!border-red-500 !text-red-900 !focus:border-red-500 !focus:ring-red-500/10' : '') .
                 ' ' .
-                // State Disabled
                 ($disabled ? 'bg-neutral-100/80 text-neutral-400 border-neutral-200 cursor-not-allowed select-none' : ''),
         ]) }}
         @if ($name) name="{{ $name }}" @endif />

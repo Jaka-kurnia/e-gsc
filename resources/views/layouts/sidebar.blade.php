@@ -91,12 +91,13 @@
     <div class="mr-4 w-64">
         {{-- Memeriksa apakah route yang aktif adalah ibu atau anak untuk otomatis membuka dropdown --}}
         <details class="group"
-            {{ request()->routeIs('pemeriksaan.*') || request()->routeIs('pemeriksaan_antropometri.*') || request()->routeIs('pemeriksaan_konseling.*') ? 'open' : '' }}>
+            {{ request()->routeIs('pemeriksaan.*') || request()->routeIs('pemeriksaan_antropometri.*') || request()->routeIs('pemeriksaan_konseling.*') || request()->routeIs('pemeriksaan_medis.*') ? 'open' : '' }}>
             <summary
                 class="flex items-center justify-between px-4 py-3 rounded-lg ml-3 cursor-pointer list-none transition-colors
             {{ request()->routeIs('pemeriksaan.*') ||
             request()->routeIs('pemeriksaan_antropometri.*') ||
-            request()->routeIs('pemeriksaan_konseling.*')
+            request()->routeIs('pemeriksaan_konseling.*') ||
+            request()->routeIs('pemeriksaan_medis.*') 
                 ? 'bg-indigo-600 text-white font-semibold'
                 : 'text-gray-200 hover:bg-indigo-500' }}">
                 <div class="flex items-center flex-1">
@@ -104,7 +105,7 @@
                     <span class="ml-3 font-medium">Data Pemeriksaan</span>
                 </div>
                 <span
-                    class="transition transform group-open:rotate-180 {{ request()->routeIs('pemeriksaan.*') || request()->routeIs('pemeriksaan_antropometri.*') || request()->routeIs('pemeriksaan_konseling.*') ? 'text-white' : 'text-gray-400' }}">
+                    class="transition transform group-open:rotate-180 {{ request()->routeIs('pemeriksaan.*') || request()->routeIs('pemeriksaan_antropometri.*') || request()->routeIs('pemeriksaan_konseling.*') || request()->routeIs('pemeriksaan_medis.*') ? 'text-white' : 'text-gray-400' }}">
                     <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                         <path
                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
@@ -121,7 +122,7 @@
                     : 'text-gray-400 hover:text-white hover:bg-indigo-500/30' }}">
                     <i
                         class="fi fi-rr-bullet text-lg mr-3 {{ request()->routeIs('pemeriksaan.*') ? 'text-white' : 'text-indigo-400 group-hover/item:text-indigo-200' }}"></i>
-                    <span>Pendaftaran</span>
+                    <span>Pendaftaran & Check-In</span>
                 </a>
 
                 <a href="{{ route('pemeriksaan_antropometri.index') }}"
@@ -131,7 +132,7 @@
                     : 'text-gray-400 hover:text-white hover:bg-indigo-500/30' }}">
                     <i
                         class="fi fi-rr-bullet text-lg mr-3 {{ request()->routeIs('pemeriksaan_antropometri.*') ? 'text-white' : 'text-indigo-400 group-hover/item:text-indigo-200' }}"></i>
-                    <span>Meja 2 Antropometri</span>
+                    <span>Pengukuran Gizi & Fisik</span>
                 </a>
 
                 <a href="{{ route('pemeriksaan_konseling.index') }}"
@@ -141,7 +142,17 @@
                     : 'text-gray-400 hover:text-white hover:bg-indigo-500/30' }}">
                     <i
                         class="fi fi-rr-bullet text-lg mr-3 {{ request()->routeIs('pemeriksaan_konseling.*') ? 'text-white' : 'text-indigo-400 group-hover/item:text-indigo-200' }}"></i>
-                    <span>Meja 3 Konseling</span>
+                    <span>Konseling & Edukasi KIE</span>
+                </a>
+
+                <a href="{{ route('pemeriksaan_medis.index') }}"
+                    class="flex items-center px-4 py-2 text-sm rounded-md transition-colors group/item
+                {{ request()->routeIs('pemeriksaan_medis.*')
+                    ? 'text-white bg-indigo-500/40 font-medium'
+                    : 'text-gray-400 hover:text-white hover:bg-indigo-500/30' }}">
+                    <i
+                        class="fi fi-rr-bullet text-lg mr-3 {{ request()->routeIs('pemeriksaan_medis.*') ? 'text-white' : 'text-indigo-400 group-hover/item:text-indigo-200' }}"></i>
+                    <span>Tindakan & Imunisasi</span>
                 </a>
 
             </div>

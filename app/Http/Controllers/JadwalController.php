@@ -14,7 +14,7 @@ class JadwalController extends Controller
     {
         $search = $request->input('search');
 
-        $data['jadwal'] = Jadwal::query()
+        $jadwal = Jadwal::query()
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('nama_kegiatan', 'like', "%{$search}%")
@@ -23,10 +23,9 @@ class JadwalController extends Controller
                 });
             })
             ->latest()
-            ->paginate(4)
-            ->withQueryString();
+            ->get();
 
-        return view('Jadwal.index', $data);
+        return view('Jadwal.index', compact('jadwal'));
     }
 
     public function create()
@@ -114,5 +113,16 @@ class JadwalController extends Controller
     {
         $jadwal->delete();
         return redirect()->route('jadwal.index')->with('success', 'Data Jadwal berhasil dihapus.');
+    }
+
+    public function move(Request $request, Jadwal $jadwal)
+    {
+        $request->validate([
+            'tanggal_kegiatan' => 'required|date',
+        ]);
+
+        $jadwal->update(['tanggal_kegiatan' => $request->tanggal_kegiatan]);
+
+        return response()->json(['success' => true, 'message' => 'Jadwal berhasil dipindahkan.']);
     }
 }
