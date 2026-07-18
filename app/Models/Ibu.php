@@ -2,10 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 
 class Ibu extends Model
 {
+    use HasFactory, LogsActivity;
+
     protected $table = 'ibus';
     protected $fillable = [
         'nik',
@@ -16,6 +21,13 @@ class Ibu extends Model
         'rw',
         'alamat',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty();
+    }
 
     public function anaks()
     {

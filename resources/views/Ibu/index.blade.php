@@ -53,25 +53,25 @@
             </thead>
             <tbody>
                 @forelse ($ibu as $item)
-                    <tr>
-                        <x-td class="text-center">{{ $loop->iteration }}</x-td>
-                        <x-td>{{ $item->nik }}</x-td>
-                        <x-td>{{ $item->nama_ibu }}</x-td>
-                        <x-td>{{ $item->nama_ayah }}</x-td>
-                        <x-td>{{ $item->no_hp }}</x-td>
-                        {{-- <x-td>{{ $item->rw }}</x-td>
-                        <x-td>{{ $item->rt }}</x-td>
-                        <x-td>
-                            <div class="max-w-50 truncate" title="{{ $item->alamat }}">
-                                {{ $item->alamat }}
-                            </div>
-                        </x-td> --}}
-                        <x-td class="text-center">
-                            <div class="flex justify-center items-center gap-1.5">
-                                <x-btn-primary type="button"
-                                    class="w-9 h-9 p-0! flex items-center justify-center shadow-sm"
-                                    title="Detail Orang Tua"
-                                    x-on:click="$dispatch('open-detail-modal', {
+                <tr>
+                    <x-td class="text-center">{{ $loop->iteration }}</x-td>
+                    <x-td>{{ $item->nik }}</x-td>
+                    <x-td>{{ $item->nama_ibu }}</x-td>
+                    <x-td>{{ $item->nama_ayah }}</x-td>
+                    <x-td>{{ $item->no_hp }}</x-td>
+                    {{-- <x-td>{{ $item->rw }}</x-td>
+                    <x-td>{{ $item->rt }}</x-td>
+                    <x-td>
+                        <div class="max-w-50 truncate" title="{{ $item->alamat }}">
+                            {{ $item->alamat }}
+                        </div>
+                    </x-td> --}}
+                    <x-td class="text-center">
+                        <div class="flex justify-center items-center gap-1.5">
+                            <x-btn-primary type="button"
+                                class="w-9 h-9 p-0! flex items-center justify-center shadow-sm"
+                                title="Detail Orang Tua"
+                                x-on:click="$dispatch('open-detail-modal', {
                                     nik: '{{ $item->nik }}',
                                     nama_ibu: '{{ $item->nama_ibu }}',
                                     nama_ayah: '{{ $item->nama_ayah }}',
@@ -80,48 +80,48 @@
                                     rt: '{{ $item->rt }}',
                                     alamat: '{{ $item->alamat }}'
                                 })">
-                                    <i class="fi fi-rr-eye text-base leading-none"></i>
-                                </x-btn-primary>
+                                <i class="fi fi-rr-eye text-base leading-none"></i>
+                            </x-btn-primary>
 
-                                <x-btn-edit type="button"
+                            <x-btn-edit type="button"
+                                class="w-9 h-9 p-0! flex items-center justify-center shadow-sm"
+                                x-on:click="$dispatch('open-edit-modal', {{ json_encode($item) }})">
+                                <i class="fi fi-rr-edit text-base leading-none"></i>
+                            </x-btn-edit>
+
+                            <form action="{{ route('ibu.destroy', $item->id) }}" method="POST"
+                                id="delete-form-{{ $item->id }}" class="m-0 inline-block">
+                                @csrf
+                                @method('DELETE')
+                                <x-btn-delete type="button"
                                     class="w-9 h-9 p-0! flex items-center justify-center shadow-sm"
-                                    x-on:click="$dispatch('open-edit-modal', {{ json_encode($item) }})">
-                                    <i class="fi fi-rr-edit text-base leading-none"></i>
-                                </x-btn-edit>
-
-                                <form action="{{ route('ibu.destroy', $item->id) }}" method="POST"
-                                    id="delete-form-{{ $item->id }}" class="m-0 inline-block">
-                                    @csrf
-                                    @method('DELETE')
-                                    <x-btn-delete type="button"
-                                        class="w-9 h-9 p-0! flex items-center justify-center shadow-sm"
-                                        onclick="confirmDelete('{{ $item->id }}')">
-                                        <i class="fi fi-rr-trash text-base leading-none"></i>
-                                    </x-btn-delete>
-                                </form>
-                            </div>
-                        </x-td>
-                    </tr>
+                                    onclick="confirmDelete('{{ $item->id }}')">
+                                    <i class="fi fi-rr-trash text-base leading-none"></i>
+                                </x-btn-delete>
+                            </form>
+                        </div>
+                    </x-td>
+                </tr>
                 @empty
-                    <tr>
-                        <x-td colspan="9" class="text-center p-0">
-                            <div class="flex items-center justify-center py-10 w-full">
-                                @if (request('search'))
-                                    <span
-                                        class="text-sm text-white bg-red-700 font-semibold px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 border border-amber-200 shadow-sm mx-auto">
-                                        <i class="fi fi-rr-search-alt text-lg leading-none"></i>
-                                        <span>Data dengan kata kunci "{{ request('search') }}" tidak ditemukan</span>
-                                    </span>
-                                @else
-                                    <span
-                                        class="text-sm text-white bg-red-700 font-semibold px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 border border-red-200 shadow-sm mx-auto">
-                                        <i class="fi fi-rr-file-exclamation text-lg leading-none"></i>
-                                        <span>Data Orang Tua Belum Tersedia</span>
-                                    </span>
-                                @endif
-                            </div>
-                        </x-td>
-                    </tr>
+                <tr>
+                    <x-td colspan="9" class="text-center p-0">
+                        <div class="flex items-center justify-center py-10 w-full">
+                            @if (request('search'))
+                            <span
+                                class="text-sm text-white bg-red-700 font-semibold px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 border border-amber-200 shadow-sm mx-auto">
+                                <i class="fi fi-rr-search-alt text-lg leading-none"></i>
+                                <span>Data dengan kata kunci "{{ request('search') }}" tidak ditemukan</span>
+                            </span>
+                            @else
+                            <span
+                                class="text-sm text-white bg-red-700 font-semibold px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 border border-red-200 shadow-sm mx-auto">
+                                <i class="fi fi-rr-file-exclamation text-lg leading-none"></i>
+                                <span>Data Orang Tua Belum Tersedia</span>
+                            </span>
+                            @endif
+                        </div>
+                    </x-td>
+                </tr>
                 @endforelse
             </tbody>
 

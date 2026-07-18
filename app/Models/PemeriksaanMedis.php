@@ -2,10 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 
 class PemeriksaanMedis extends Model
 {
+    use HasFactory, LogsActivity;
+
     protected $table = 'pemeriksaan_medis';
     protected $primaryKey = 'pemeriksaan_id';
     public $incrementing = false;
@@ -19,6 +24,13 @@ class PemeriksaanMedis extends Model
         'status_rujukan_medis',
         'catatan',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty();
+    }
 
     public function pemeriksaan()
     {
