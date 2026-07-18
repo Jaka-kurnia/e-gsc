@@ -97,6 +97,7 @@
                                      pemberian_vitamin: '{{ ucwords(str_replace('_', ' ', $item->pemberian_vitamin)) }}',
                                      pemberian_obat_cacing: '{{ $item->pemberian_obat_cacing ? 'Ya' : 'Tidak' }}',
                                      status_rujukan_medis: '{{ $item->status_rujukan_medis ? 'Ya' : 'Tidak' }}',
+                                     imunisasi: '{{ $item->imunisasis->pluck('nama_imunisasi')->join(', ') ?: '-' }}',
                                      catatan: '{{ addslashes($item->catatan ?? '-') }}'
                              })">
                                 <i class="fi fi-rr-eye text-base leading-none"></i>

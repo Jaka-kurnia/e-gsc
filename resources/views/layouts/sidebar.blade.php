@@ -166,36 +166,12 @@
         </a>
     </div>
     <div class="flex items-center mr-4">
-        <a href="#" class="flex items-center flex-1 px-4 py-3 text-gray-200 hover:bg-indigo-500 rounded-lg ml-3">
+        <a href="{{ route('activity-log.index') }}" class="flex items-center flex-1 px-4 py-3 rounded-lg ml-3 {{ request()->routeIs('activity-log.*') ? 'bg-indigo-600 text-white font-semibold' : 'text-gray-200 hover:bg-indigo-500' }}">
             <i class="fi fi-rs-time-past text-lg leading-none relative top-0.5"></i>
             <span class="ml-3 font-medium">Riwayat</span>
         </a>
     </div>
-    {{-- <div class="flex items-center mr-4">
-        <a href="#" class="flex items-center flex-1 px-4 py-3 text-gray-200 hover:bg-indigo-500 rounded-lg ml-3">
-            <i class="fi fi-rs-diploma text-lg leading-none relative top-0.5"></i>
-            <span class="ml-3 font-medium">Hasil Kelulusan</span>
-        </a>
-    </div>
 
-    <div class="flex items-center mr-4">
-        <a href="#" class="flex items-center flex-1 px-4 py-3 text-gray-200 hover:bg-indigo-500 rounded-lg ml-3">
-            <i class="fi fi-rr-calendar-clock text-lg leading-none relative top-0.5"></i>
-            <span class="ml-3 font-medium">Jadwal</span>
-        </a>
-    </div>
-    <div class="flex items-center mr-4">
-        <a href="#" class="flex items-center flex-1 px-4 py-3 text-gray-200 hover:bg-indigo-500 rounded-lg ml-3">
-            <i class="fi fi-rs-users text-lg leading-none relative top-0.5"></i>
-            <span class="ml-3 font-medium">Data Pendaftar</span>
-        </a>
-    </div>
-    <div class="flex items-center mr-4">
-        <a href="#" class="flex items-center flex-1 px-4 py-3 text-gray-200 hover:bg-indigo-500 rounded-lg ml-3">
-            <i class="fi fi-rs-test text-lg leading-none relative top-0.5"></i>
-            <span class="ml-3 font-medium">Seleksi Ujian</span>
-        </a>
-    </div> --}}
     <div class="flex items-center mr-4">
         <a href="#" class="flex items-center flex-1 px-4 py-3 text-gray-200 hover:bg-indigo-500 rounded-lg ml-3">
             <i class="fi fi-rs-megaphone text-lg leading-none relative top-0.5"></i>

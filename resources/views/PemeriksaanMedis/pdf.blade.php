@@ -22,10 +22,11 @@
                 <th width="5%">No</th>
                 <th width="15%">No. Pemeriksaan</th>
                 <th width="20%">Nama Anak</th>
-                <th width="15%">Pemberian Vitamin</th>
-                <th width="15%">Obat Cacing</th>
-                <th width="15%">Rujukan Medis</th>
-                <th width="15%">Catatan</th>
+                <th width="12%">Pemberian Vitamin</th>
+                <th width="12%">Obat Cacing</th>
+                <th width="12%">Rujukan Medis</th>
+                <th width="17%">Imunisasi</th>
+                <th width="12%">Catatan</th>
             </tr>
         </thead>
         <tbody>
@@ -37,11 +38,12 @@
                     <td>{{ $item['pemberian_vitamin'] }}</td>
                     <td class="text-center">{{ $item['pemberian_obat_cacing'] }}</td>
                     <td class="text-center">{{ $item['status_rujukan_medis'] }}</td>
+                    <td>{{ $item['imunisasi'] }}</td>
                     <td>{{ $item['catatan'] }}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" class="text-center">Data Pemeriksaan Medis tidak tersedia</td>
+                    <td colspan="8" class="text-center">Data Pemeriksaan Medis tidak tersedia</td>
                 </tr>
             @endforelse
         </tbody>

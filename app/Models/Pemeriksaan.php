@@ -4,9 +4,20 @@ namespace App\Models;
 
 use App\Models\Jadwal;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 
 class Pemeriksaan extends Model
 {
+    use LogsActivity;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty();
+    }
+
     protected $fillable = [
         'nomor_pemeriksaan',
         'jadwal_id',

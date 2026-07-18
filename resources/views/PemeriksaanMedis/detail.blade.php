@@ -37,6 +37,12 @@
                 </div>
 
                 <div class="flex items-start">
+                    <div class="w-40 text-gray-500 font-medium shrink-0">Imunisasi</div>
+                    <div class="px-2 text-gray-500">:</div>
+                    <div class="text-gray-900" x-text="detail.imunisasi || '-'"></div>
+                </div>
+
+                <div class="flex items-start">
                     <div class="w-40 text-gray-500 font-medium shrink-0">Catatan</div>
                     <div class="px-2 text-gray-500">:</div>
                     <div class="text-gray-900 whitespace-pre-wrap" x-text="detail.catatan || '-'"></div>

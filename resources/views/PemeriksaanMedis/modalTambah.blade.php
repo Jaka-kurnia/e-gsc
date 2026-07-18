@@ -55,8 +55,24 @@
                     </label>
                 </div>
 
+                <!-- Checkbox Imunisasi -->
+                <div class="col-span-1 md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Pemberian Imunisasi</label>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                        @forelse ($imunisasis as $imun)
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="checkbox" name="imunisasi_id[]" x-model="imunisasi_id" value="{{ $imun->id }}" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                            <span class="ml-2 text-sm text-gray-700">{{ $imun->nama_imunisasi }}</span>
+                        </label>
+                        @empty
+                        <span class="text-sm text-gray-500 italic col-span-2 md:col-span-3">Data Imunisasi belum tersedia.</span>
+                        @endforelse
+                    </div>
+                    <x-input-error :messages="$errors->get('imunisasi_id')" class="mt-2" />
+                </div>
+
                 <!-- Catatan -->
-                <div class="col-span-1 md:col-span-2 mt-2">
+                <div class="col-span-1 md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Catatan</label>
                     <x-textarea name="catatan" placeholder="Masukkan Catatan Medis (Opsional)" rows="3" x-model="catatan" />
                     <x-input-error :messages="$errors->get('catatan')" class="mt-2" />

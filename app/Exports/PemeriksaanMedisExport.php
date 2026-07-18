@@ -19,7 +19,7 @@ class PemeriksaanMedisExport implements FromCollection, WithHeadings, WithStyles
 
     public function collection()
     {
-        return PemeriksaanMedis::with(['pemeriksaan.anak', 'pemeriksaan.jadwal', 'user'])
+        return PemeriksaanMedis::with(['pemeriksaan.anak', 'pemeriksaan.jadwal', 'user', 'imunisasis'])
             ->when($this->search, function ($query, $search) {
                 $query->whereHas('pemeriksaan.anak', function ($q) use ($search) {
                     $q->where('nama', 'like', "%{$search}%");
@@ -27,7 +27,10 @@ class PemeriksaanMedisExport implements FromCollection, WithHeadings, WithStyles
                     $q->where('nomor_pemeriksaan', 'like', "%{$search}%");
                 });
             })
-            ->latest()
+            ->join('pemeriksaans', 'pemeriksaan_medis.pemeriksaan_id', '=', 'pemeriksaans.id')
+            ->orderBy('pemeriksaans.tanggal_kunjungan', 'asc')
+            ->orderBy('pemeriksaans.nomor_pemeriksaan', 'asc')
+            ->select('pemeriksaan_medis.*')
             ->get()
             ->map(function ($item, $index) {
                 return [
@@ -37,6 +40,7 @@ class PemeriksaanMedisExport implements FromCollection, WithHeadings, WithStyles
                     'Pemberian Vitamin' => ucwords(str_replace('_', ' ', $item->pemberian_vitamin)),
                     'Pemberian Obat Cacing' => $item->pemberian_obat_cacing ? 'Ya' : 'Tidak',
                     'Status Rujukan Medis' => $item->status_rujukan_medis ? 'Ya' : 'Tidak',
+                    'Imunisasi' => $item->imunisasis->pluck('nama_imunisasi')->join(', ') ?: '-',
                     'Catatan' => $item->catatan ?? '-',
                 ];
             });
@@ -44,21 +48,21 @@ class PemeriksaanMedisExport implements FromCollection, WithHeadings, WithStyles
 
     public function headings(): array
     {
-        return ['No', 'No. Pemeriksaan', 'Nama Anak', 'Pemberian Vitamin', 'Pemberian Obat Cacing', 'Status Rujukan Medis', 'Catatan'];
+        return ['No', 'No. Pemeriksaan', 'Nama Anak', 'Pemberian Vitamin', 'Pemberian Obat Cacing', 'Status Rujukan Medis', 'Imunisasi', 'Catatan'];
     }
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->getStyle('A1:G1')->applyFromArray([
+        $sheet->getStyle('A1:H1')->applyFromArray([
             'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF'], 'size' => 12],
             'fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => '2563EB']],
             'alignment' => ['horizontal' => 'center', 'vertical' => 'center'],
         ]);
 
-        $sheet->getStyle('A1:G' . ($sheet->getHighestRow()))
+        $sheet->getStyle('A1:H' . ($sheet->getHighestRow()))
             ->getBorders()->getAllBorders()->setBorderStyle('thin');
 
-        foreach (range('A', 'G') as $col) {
+        foreach (range('A', 'H') as $col) {
             $sheet->getColumnDimension($col)->setAutoSize(true);
         }
     }

@@ -47,3 +47,5 @@ Route::resource('pemeriksaan_konseling',PemeriksaanKonselingController::class);
 Route::get('pemeriksaan_medis/excel', [PemeriksaanMedisController::class, 'exportExcel'])->name('pemeriksaan_medis.excel');
 Route::get('pemeriksaan_medis/pdf', [PemeriksaanMedisController::class, 'exportPdf'])->name('pemeriksaan_medis.pdf');
 Route::resource('pemeriksaan_medis',PemeriksaanMedisController::class);
+
+Route::get('activity-log', [\App\Http\Controllers\ActivityLogController::class, 'index'])->name('activity-log.index');
